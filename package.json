@@ -19,6 +19,7 @@
         "graphql": ">=14.5.8",
         "jsonwebtoken": ">=8.5.1",
         "mongoose": ">=5.7.12",
-        "nodemon": ">=2.0.2"
+        "nodemon": ">=2.0.2",
+        "minimist": ">=1.2.2"
     }
 }
