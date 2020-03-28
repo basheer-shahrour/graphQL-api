@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const graphqlHttp = require("express-graphql");
+const webpush = require('web-push');
 
 const graphQLSchema = require("./api/schema/index");
 const graphQLResolvers = require("./api/resolvers/index");
@@ -34,6 +35,22 @@ app.use('/graphql', graphqlHttp({
     graphiql: true
 }));
 
+const publicVapidKey = process.env.PUBLIC_VAPID_KEY;
+const privateVapidKey = process.env.PRIVAT_VAPID_KEY;
+
+webpush.setVapidDetails("mailto:test@test.com", publicVapidKey, privateVapidKey);
+
+app.post('/subscribe', (req, res) => {
+    const subscription = req.body;
+    res.status(201).json({});
+    const payload = JSON.stringify({
+        title: 'Computer Engineering Site',
+        body: 'There is new session or content, check out !'
+    });
+    webpush.sendNotification(subscription, payload).catch((error) => {
+        console.error(error);
+    });
+});
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {
     useNewUrlParser: true,
