@@ -7,7 +7,7 @@ module.exports = {
         return User.findOne({ name: args.userInput.name }).then((aUser) => {
             if (aUser) {
                 throw new Error("This user has already been saved");
-            } else {
+            } else if(args.userInput.authKey === process.env.AUTH_KEY) {
                 return bcrypt.hash(args.userInput.password, 12).then((hashedPassword) => {
                     const user = new User({
                         name: args.userInput.name,
@@ -36,6 +36,8 @@ module.exports = {
                 }).catch((error) => {
                     throw error;
                 });
+            } else {
+                throw new Error("Error with auth key ...");
             }
         }).catch((error) => {
             throw error;

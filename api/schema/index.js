@@ -56,6 +56,7 @@ module.exports = buildSchema(`
             password: String!
             uID: String
             year: String!
+            authKey: String!
         }
 
         type RootQuery {
