@@ -77,6 +77,11 @@ app.post('/push', (req, res) => {
     });
 });
 
+app.post('/resetClientsFile', (req, res) => {
+    res.status(201).json({});
+    fs.writeFileSync("./clients.json", JSON.stringify([]), 'utf-8');
+});
+
 // Setup mongoose
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {
