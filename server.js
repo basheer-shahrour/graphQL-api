@@ -4,10 +4,10 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const graphqlHttp = require("express-graphql");
 const webpush = require('web-push');
+const fs = require('fs');
 
 const graphQLSchema = require("./api/schema/index");
 const graphQLResolvers = require("./api/resolvers/index");
-
 require("dotenv").config();
 
 const app = express();
@@ -28,29 +28,56 @@ app.use((req, res, next) => {
     next();
 });
 
-
 app.use('/graphql', graphqlHttp({
     schema: graphQLSchema,
     rootValue: graphQLResolvers,
     graphiql: true
 }));
 
+// Write init clients file
+if(!fs.existsSync("./clients.json")) {
+    fs.writeFileSync("./clients.json", JSON.stringify([]), 'utf-8');
+}
+
+// Setup web-push
 const publicVapidKey = process.env.PUBLIC_VAPID_KEY;
 const privateVapidKey = process.env.PRIVAT_VAPID_KEY;
-
 webpush.setVapidDetails("mailto:test@test.com", publicVapidKey, privateVapidKey);
 
 app.post('/subscribe', (req, res) => {
     const subscription = req.body;
     res.status(201).json({});
-    const payload = JSON.stringify({
-        title: 'Computer Engineering Site',
-        body: 'There is new session or content, check out !'
-    });
-    webpush.sendNotification(subscription, payload).catch((error) => {
-        console.error(error);
+    let clients = [];
+    try {
+        clients = require("./clients.json");
+        clients.push(subscription);
+        fs.writeFileSync("./clients.json", JSON.stringify(clients, null, 2), 'utf-8');
+    } catch (exp) {
+        console.log(exp);
+    }
+});
+
+app.post('/push', (req, res) => {
+    let clients = [];
+    clients = require("./clients.json");
+    res.status(201).json({});
+    clients.map((subscription, index) => {
+        console.log("sending push to client " + index);
+        try {
+            const payload = JSON.stringify({
+                title: 'Computer Engineering Site',
+                body: `There is new content, ${req.data}, check it out!`
+            });
+            webpush.sendNotification(subscription, payload).catch((error) => {
+                console.error(error);
+            });
+        } catch (exp) {
+            console.log(exp);
+        }
     });
 });
+
+// Setup mongoose
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {
     useNewUrlParser: true,
