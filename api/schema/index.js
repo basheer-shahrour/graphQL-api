@@ -43,7 +43,7 @@ module.exports = buildSchema(`
         }
 
         input SessionInput {
-            type: String!,
+            type: String!
             number: Int!
             downloadURL: String!
             creator: String!
@@ -59,6 +59,13 @@ module.exports = buildSchema(`
             authKey: String!
         }
 
+        input SessionUpdateInput {
+            sessionId: ID! 
+            type: String!
+            number: Int!
+            downloadURL: String!
+        }
+
         type RootQuery {
             subjects: [Subject!]!
             sessions: [Session!]!
@@ -70,7 +77,7 @@ module.exports = buildSchema(`
             deleteSession(sessionId: ID!): Session
             deleteSubject(subjectId: ID!): Subject
             login(name: String!, password: String!): AuthData
-            updateSession(sessionInput: SessionInput): Session
+            updateSession(sessionUpdateInput: SessionUpdateInput): Session
         }
         schema {
             query: RootQuery
