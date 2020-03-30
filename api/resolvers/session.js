@@ -99,7 +99,8 @@ module.exports = {
                 });
             return {
                 ...updatedSession._doc,
-                _id: updatedSession.id
+                _id: updatedSession.id,
+                subject: findSubject.bind(this, session._doc.id)
             };
         } catch (error) {
             throw error;
