@@ -88,7 +88,7 @@ module.exports = {
     },
     updateSession: async (args) => {
         try {
-            const updatedSession = await Session.findByIdAndUpdate({ _id: args.sessionUpdateInput.sessionId }, {
+            const updatedSession = await Session.updateOne({ _id: args.sessionUpdateInput.sessionId }, {
                 $set: {
                     type: args.sessionUpdateInput.type,
                     number: args.sessionUpdateInput.number,
