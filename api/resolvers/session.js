@@ -85,5 +85,24 @@ module.exports = {
         } catch (error) {
             throw error;
         }
+    },
+    updateSession: async (args) => {
+        try {
+            const updatedSession = await Session.updateOne({
+                _id: args._id
+            }, {
+                    $set: {
+                        type: args.type,
+                        number: args.number,
+                        downloadURL: args.downloadURL
+                    }
+                });
+            return {
+                ...updatedSession._doc,
+                _id: updatedSession.id
+            };
+        } catch (error) {
+            throw error;
+        }
     }
 };

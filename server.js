@@ -3,8 +3,8 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const graphqlHttp = require("express-graphql");
-const webpush = require('web-push');
-const fs = require('fs');
+const webpush = require("web-push");
+const fs = require("fs");
 
 const graphQLSchema = require("./api/schema/index");
 const graphQLResolvers = require("./api/resolvers/index");

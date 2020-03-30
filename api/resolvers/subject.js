@@ -1,5 +1,3 @@
-/*jshint esversion: 9 */
-
 const Subject = require("../../models/subject");
 const { findSessions } = require("./joint");
 const Session = require("../../models/session");

@@ -70,6 +70,7 @@ module.exports = buildSchema(`
             deleteSession(sessionId: ID!): Session
             deleteSubject(subjectId: ID!): Subject
             login(name: String!, password: String!): AuthData
+            updateSession(sessionInput: SessionInput): Session
         }
         schema {
             query: RootQuery
