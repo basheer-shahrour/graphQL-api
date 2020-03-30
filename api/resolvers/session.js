@@ -100,7 +100,7 @@ module.exports = {
             return {
                 ...updatedSession._doc,
                 _id: updatedSession.id,
-                subject: findSubject.bind(this, session._doc.id)
+                subject: findSubject.bind(this, updatedSession._doc.id)
             };
         } catch (error) {
             throw error;
