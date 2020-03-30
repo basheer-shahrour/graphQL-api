@@ -88,20 +88,20 @@ module.exports = {
     },
     updateSession: async (args) => {
         try {
-            const updatedSession = await Session.updateOne({ _id: args.sessionUpdateInput.sessionId }, {
+            const updatedSession = await Session.findByIdAndUpdate({ _id: args.sessionUpdateInput.sessionId }, {
                 $set: {
                     type: args.sessionUpdateInput.type,
                     number: args.sessionUpdateInput.number,
                     downloadURL: args.sessionUpdateInput.downloadURL
                 }
-            });
-            console.log(updatedSession);
-            return {
-                ...updatedSession._doc,
-                _id: updatedSession.id
-            };
-        } catch (error) {
-            throw error;
-        }
+            }, { useFindAndModify: false });
+        console.log(updatedSession);
+        return {
+            ...updatedSession._doc,
+            _id: updatedSession.id
+        };
+    } catch(error) {
+        throw error;
     }
+}
 };
