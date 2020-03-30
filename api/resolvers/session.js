@@ -94,7 +94,7 @@ module.exports = {
                     number: args.sessionUpdateInput.number,
                     downloadURL: args.sessionUpdateInput.downloadURL
                 }
-            }, { useFindAndModify: false });
+            });
             console.log(updatedSession);
             return {
                 ...updatedSession._doc,
