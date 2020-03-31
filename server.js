@@ -66,7 +66,7 @@ app.post('/push', (req, res) => {
         try {
             const payload = JSON.stringify({
                 title: 'Computer Engineering Site',
-                body: `There is new content, ${req.data}, check it out!`
+                body: `There is new content, ${req.body.data}, check it out!`
             });
             webpush.sendNotification(subscription, payload).catch((error) => {
                 console.error(error);
