@@ -35,9 +35,9 @@ app.use('/graphql', graphqlHttp({
 }));
 
 // Write init clients file
-if(!fs.existsSync("./clients.json")) {
-    fs.writeFileSync("./clients.json", JSON.stringify([]), 'utf-8');
-}
+// if(!fs.existsSync("./clients.json")) {
+//     fs.writeFileSync("./clients.json", JSON.stringify([]), 'utf-8');
+// }
 
 // Setup web-push
 const publicVapidKey = process.env.PUBLIC_VAPID_KEY;
