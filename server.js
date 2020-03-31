@@ -50,9 +50,9 @@ app.post('/subscribe', (req, res) => {
     res.status(201).json({});
     let clients = [];
     try {
-        clients = require("./clients.json");
+        clients = require("https://arduino-ar.glitch.me/graphql-api/clients.json");
         clients.push(subscription);
-        fs.writeFileSync("./clients.json", JSON.stringify(clients, null, 2), 'utf-8');
+        fs.writeFileSync("https://arduino-ar.glitch.me/graphql-api/clients.json", JSON.stringify(clients, null, 2), 'utf-8');
     } catch (exp) {
         console.log(exp);
     }
