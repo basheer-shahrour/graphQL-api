@@ -8,6 +8,7 @@ const fs = require("fs");
 
 const graphQLSchema = require("./api/schema/index");
 const graphQLResolvers = require("./api/resolvers/index");
+
 require("dotenv").config();
 
 const app = express();
@@ -57,9 +58,10 @@ app.post('/subscribe', (req, res) => {
     }
 });
 
-app.post('/push', (req, res) => {
+app.post('/push', async (req, res) => {
     let clients = [];
-    clients = require("./clients.json");
+    clients = require("https://arduino-ar.glitch.me/graphql-api/clients.json");
+    console.log(clients);
     res.status(201).json({});
     clients.map((subscription, index) => {
         console.log("sending push to client " + index);
