@@ -56,7 +56,7 @@ app.post('/push', async (req, res) => {
     res.status(201).json({});
     let clients = await axios.get('https://graphql-api.glitch.me/getClients');
     console.log(clients);
-    clients.data[0].map((subscription, index) => {
+    clients.data.map((subscription, index) => {
         console.log("sending push to client " + index);
         try {
             const payload = JSON.stringify({
