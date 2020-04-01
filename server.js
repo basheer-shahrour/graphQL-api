@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const graphqlHttp = require("express-graphql");
 const webpush = require("web-push");
-const fs = require("fs");
+const axios = require("axios");
 
 const graphQLSchema = require("./api/schema/index");
 const graphQLResolvers = require("./api/resolvers/index");
@@ -35,10 +35,6 @@ app.use('/graphql', graphqlHttp({
     graphiql: true
 }));
 
-// Write init clients file
-// if(!fs.existsSync("./clients.json")) {
-//     fs.writeFileSync("./clients.json", JSON.stringify([]), 'utf-8');
-// }
 
 // Setup web-push
 const publicVapidKey = process.env.PUBLIC_VAPID_KEY;
@@ -48,21 +44,19 @@ webpush.setVapidDetails("mailto:test@test.com", publicVapidKey, privateVapidKey)
 app.post('/subscribe', (req, res) => {
     const subscription = req.body;
     res.status(201).json({});
-    let clients = [];
-    try {
-        clients = require("https://arduino-ar.glitch.me/graphql-api/clients.json");
-        clients.push(subscription);
-        fs.writeFileSync("https://arduino-ar.glitch.me/graphql-api/clients.json", JSON.stringify(clients, null, 2), 'utf-8');
-    } catch (exp) {
-        console.log(exp);
-    }
+
+    axios.post('https://graphql-api.glitch.me/addClients', subscription).then((res) => {
+        console.error("I posted the subscription object");
+    }).catch((error) => {
+        console.error(error);
+    });
 });
 
 app.post('/push', async (req, res) => {
     let clients = [];
-    clients = require("https://arduino-ar.glitch.me/graphql-api/clients.json");
-    console.log(clients);
     res.status(201).json({});
+    clients = await axios.get('https://graphql-api.glitch.me/getClients');
+    console.log(clients);
     clients.map((subscription, index) => {
         console.log("sending push to client " + index);
         try {
@@ -79,10 +73,6 @@ app.post('/push', async (req, res) => {
     });
 });
 
-app.post('/resetClientsFile', (req, res) => {
-    res.status(201).json({});
-    fs.writeFileSync("./clients.json", JSON.stringify([]), 'utf-8');
-});
 
 // Setup mongoose
 const uri = process.env.ATLAS_URI;
