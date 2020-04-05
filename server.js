@@ -45,7 +45,7 @@ app.post('/subscribe', (req, res) => {
     const subscription = req.body;
     res.status(201).json({});
 
-    axios.post('https://graphql-api.glitch.me/addClients', subscription).then((res) => {
+    axios.post(process.env.CLIENTS_STOR_API, subscription).then((res) => {
         console.error("I posted the subscription object");
     }).catch((error) => {
         console.error(error);
@@ -54,7 +54,7 @@ app.post('/subscribe', (req, res) => {
 
 app.post('/push', async (req, res) => {
     res.status(201).json({});
-    let clients = await axios.get('https://graphql-api.glitch.me/getClients');
+    let clients = await axios.get(process.env.CLIENTS_STOR_API);
     console.log(clients);
     clients.data.map((subscription, index) => {
         console.log("sending push to client " + index);
